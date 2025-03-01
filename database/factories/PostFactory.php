@@ -2,13 +2,15 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-
+use Faker\Provider\en_US\Company;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Post>
  */
 class PostFactory extends Factory
 {
+
     /**
      * Define the model's default state.
      *
@@ -16,7 +18,13 @@ class PostFactory extends Factory
      */
     public function definition(): array
     {
+        
         return [
+            'user_id'=> User::factory(),
+            'title' => fake()->catchPhrase,
+            'body' => fake()->realText(300),     
+
+            
             //
         ];
     }
