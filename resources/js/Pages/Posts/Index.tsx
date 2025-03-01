@@ -5,16 +5,16 @@ import { Session } from '@/types';
 
 
 interface Props {
-  sessions: Session[];
+
   confirmsTwoFactorAuthentication: boolean;
 }
 
-export default function Index({
-    sessions,
-    confirmsTwoFactorAuthentication,
-}:Props){
+export default function Index({posts}:{posts:any[]}
+    ){
 
     const page = useTypedPage();
+
+    console.log('posts', posts);
     return(
         <AppLayout
         
@@ -27,7 +27,17 @@ export default function Index({
   
         >
             <div>
-                ASDFASDF
+              <ul>
+
+                {posts && 
+                  posts.map((post) => (
+                    <li key={post.id}>
+                      {post.title}
+                    </li>
+                  ))
+                }
+              </ul>
+
             </div>
         </AppLayout>
     );
