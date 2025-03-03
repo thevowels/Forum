@@ -15,5 +15,6 @@ it('should return correct component', function(){
 it('passes posts to the view ', function () {
     get(route('posts.index'))
         ->assertInertia(fn (AssertableInertia $inertia) => $inertia
-                                                        ->has('posts'));
+                                         ->has('posts')
+        );
 });
