@@ -15,9 +15,9 @@ class PostController extends Controller
     public function index()
     {
         //
-        ray()->showQueries();
         return Inertia('Posts/Index', [
-            'posts'=> PostResource::collection(Post::paginate()),
+            'post' => PostResource::make(Post::first()),
+            'posts'=> PostResource::collection(Post::latest()->latest('id')->paginate()),
         ]);
     }
 

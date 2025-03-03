@@ -5,12 +5,7 @@ import { Session } from '@/types';
 import Pagination from '@/Components/Pagination';
 
 
-interface Props {
-
-  confirmsTwoFactorAuthentication: boolean;
-}
-
-export default function Index({posts}:{posts:any}
+export default function Index({posts,post}:{post:any, posts:any}
     ){
 
     const page = useTypedPage();
