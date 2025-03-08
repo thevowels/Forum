@@ -36,6 +36,7 @@ Route::get('test',function(){
         PostResource::make(Post::find(1)),
         CommentResource::make(Comment::find(1)),
     ];
-}); 
+});
 
 Route::get('posts',[PostController::class, 'index'])->name('posts.index');
+Route::get('posts/{post}',[PostController::class, 'show'])->name('posts.show');
