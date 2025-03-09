@@ -58,7 +58,7 @@ export default function Show({post, comments}:{post:any, comments:any}     ) {
                                 </div>
                             </div>
                         ))}
-                        <Pagination meta={comments.meta} links = {comments.links}/>
+                        <Pagination meta={comments.meta} links = {comments.links} only={['comments']}/>
 
                     </div>
 

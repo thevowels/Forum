@@ -54,7 +54,7 @@ export default function Index({posts,post}:{post:any, posts:any}
                 }
               </ul>
               </div>
-              <Pagination meta={posts.meta} links = {posts.links}/>
+              <Pagination meta={posts.meta} links = {posts.links} only={['posts']}/>
 
             </div>
         </AppLayout>
