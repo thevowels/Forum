@@ -45,7 +45,7 @@ class PostController extends Controller
         //
         return Inertia::render('Posts/Show', [
             'post' =>PostResource::make($post),
-            'comments' => CommentResource::collection($post->comments()->with('user')->paginate(10)),
+            'comments' => CommentResource::collection($post->comments()->with('user')->paginate(3)),
         ]);
     }
 

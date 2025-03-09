@@ -36,8 +36,8 @@ export default function Pagination({meta, links}:Props) {
       <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
         <div>
           <p className="text-sm text-gray-700">
-            Showing <span className="font-medium">1</span> to <span className="font-medium">10</span> of{' '}
-            <span className="font-medium">97</span> results
+            Showing <span className="font-medium">{meta?.from}</span> to <span className="font-medium">{meta?.to}</span> of{' '}
+            <span className="font-medium">{meta?.total}</span> results
           </p>
         </div>
         <div>
@@ -45,7 +45,7 @@ export default function Pagination({meta, links}:Props) {
             {/* Current: "z-10 bg-indigo-600 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600", Default: "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0" */}
 
             {
-                meta.links.map((ll, index) => (
+                meta.links.map((ll:any, index:number) => (
                     <Link
                     key={index}
                     href={ll.url}
@@ -55,7 +55,7 @@ export default function Pagination({meta, links}:Props) {
                   >
                     {ll.label}
                   </Link>
-      
+
                 ))
             }
 
