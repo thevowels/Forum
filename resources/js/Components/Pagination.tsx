@@ -21,6 +21,7 @@ export default function Pagination({meta, links}:Props) {
         <Link
           href={links.prev}
           preserveScroll
+          only={['comments']}
           className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
         >
           Previous
@@ -28,6 +29,7 @@ export default function Pagination({meta, links}:Props) {
         <Link
           href={links.next}
           preserveScroll
+          only={['comments']}
           className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
         >
           Next
@@ -52,6 +54,7 @@ export default function Pagination({meta, links}:Props) {
                     aria-disabled={ll.url ? "false" : "true"}
                     className={ll.active ? 'relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600  first-of-type:rounded-l-md last-of-type:rounded-r-md' : ' first-of-type:rounded-l-md last-of-type:rounded-r-md relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0'}
                     preserveScroll
+                    only={['comments']}
                   >
                     {ll.label}
                   </Link>
