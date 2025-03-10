@@ -31,7 +31,9 @@ export default function Show({post, comments}:{post:any, comments:any}     ) {
     }
 
     const deleteComment = (id: string) => {
-        router.delete(route('comments.destroy', id), {preserveScroll: true});
+        router.delete(route('comments.destroy', { comment:id, page:comments?.meta?.current_page }), {
+          preserveScroll: true,
+        });
     }
 
     // @ts-ignore

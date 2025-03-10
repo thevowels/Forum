@@ -75,6 +75,6 @@ class CommentController extends Controller
         $this->authorize('delete', $comment);
 
         $comment->delete();
-        return redirect()->route('posts.show', $comment->post_id);
+        return redirect()->route('posts.show', ['post'=> $comment->post_id, 'page'=> $request->get('page') ]);
     }
 }
