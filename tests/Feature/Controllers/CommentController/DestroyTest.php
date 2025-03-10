@@ -37,3 +37,12 @@ it('prevents deleting comment that is not yours', function () {
         ->assertForbidden();
 
 });
+it('prevents deleting comment that is longer than 1 hour old', function () {
+    $this->freezeTime();
+    $comment = Comment::factory()->create();
+    $this->travel(2)->hour();
+    actingAs($comment->user)
+        ->delete(route('comments.destroy', $comment))
+        ->assertForbidden();
+
+});

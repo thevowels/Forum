@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class CommentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    use AuthorizesRequests;
     public function index()
     {
         //
@@ -70,9 +72,8 @@ class CommentController extends Controller
     public function destroy(Request $request, Comment $comment)
     {
         //
-        if($request->user()->id !== $comment->user_id){
-            abort(403);
-        }
+        $this->authorize('delete', $comment);
+
         $comment->delete();
         return redirect()->route('posts.show', $comment->post_id);
     }

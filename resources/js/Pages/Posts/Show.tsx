@@ -93,10 +93,10 @@ export default function Show({post, comments}:{post:any, comments:any}     ) {
                         </div>
                         {comments.data.map((comment:any) => (
                             <div key={comment.id} className="mt-4 bg-white flex flex-row">
-                                <div className={"w-44"}>
+                                <div >
                                         <img src={comment?.user?.profile_photo_url}  />
                                 </div>
-                                <div className="ml-2">
+                                <div className="w-full m-1 ml-4">
                                     <div className={"font-sans break-all"}>
                                         {comment.body}
                                     </div>
@@ -104,7 +104,7 @@ export default function Show({post, comments}:{post:any, comments:any}     ) {
                                         <span className={"font-semiboldtext-gray-800"}>By</span> <span className={"font-bold text-blue-950"}>{comment.user?.name}</span>
                                         <span className="ml-2">{formatDistance(comment?.created_at || new Date(), new Date())}</span> ago
                                     </div>
-                                    { page.props?.auth?.user?.id == comment.user.id &&
+                                    { comment.can?.delete &&
                                         <div className={"mt-1"}>
                                             <PrimaryButton onClick={()=> deleteComment(comment.id)}>
                                                 Delete
