@@ -1,7 +1,7 @@
 import React from "react";
 import AppLayout from '@/Layouts/AppLayout';
 import { formatDistance } from "date-fns";
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import {relativeDate} from '@/Utilities/date';
 import Pagination from '@/Components/Pagination';
 import InputLabel from '@/Components/InputLabel';
@@ -9,12 +9,14 @@ import { Input } from '@headlessui/react';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { useForm } from "@inertiajs/react";
 import InputError from '@/Components/InputError';
+import { route } from 'ziggy-js';
+import { router } from '@inertiajs/core';
 
 export default function Show({post, comments}:{post:any, comments:any}     ) {
-    console.log('called show', post);
-    const formattedDate = formatDistance(post?.created_at || new Date(), new Date());
-    console.log(formattedDate);
+    const page = usePage();
+    console.log('page => ', page);
     console.log('comments = > ', comments);
+    const formattedDate = formatDistance(post?.created_at || new Date(), new Date());
     const {data, setData, post: realPost, put,  errors, processing, reset, recentlySuccessful } =
         useForm({
             body: '',
@@ -23,10 +25,16 @@ export default function Show({post, comments}:{post:any, comments:any}     ) {
         e.preventDefault();
         realPost(route('posts.comments.store', post.id),{
             preserveScroll: true,
-
         });
+        reset()
 
     }
+
+    const deleteComment = (id: string) => {
+        router.delete(route('comments.destroy', id), {preserveScroll: true});
+    }
+
+    // @ts-ignore
     return(
         <AppLayout
             title="Post Title"
@@ -54,27 +62,32 @@ export default function Show({post, comments}:{post:any, comments:any}     ) {
 
                         </div>
                     </div>
-                    <div className="max-w-2xl mx-auto  my-4 p-8 text-sm">
-                        <div>
-                            <form className={"max-w-2xl"} onSubmit={submit}>
-                                <div className="py-2">
-                                    <InputLabel htmlFor="comment">Add Comment</InputLabel>
-                                    <Input
-                                        className={"mt-1 block w-full rounded-lg border-gray-300 h-[6rem]"}
-                                        value={data.body}
-                                        onChange={(e:any) => {setData('body',e.target.value)}}
-                                        placeholder={"What's on your mind?"}
-                                    />
-                                    <InputError message={errors.body} className={"mt-2"}/>
-                                </div>
-                                <div>
-                                    <PrimaryButton>
-                                        Add Comment
-                                    </PrimaryButton>
-                                </div>
 
-                            </form>
-                        </div>
+                    <div className="max-w-2xl mx-auto  my-4 p-8 text-sm">
+                        {page.props.auth?.user &&
+
+                            <div>
+                                <form className={"max-w-2xl"} onSubmit={submit}>
+                                    <div className="py-2">
+                                        <InputLabel htmlFor="comment">Add Comment</InputLabel>
+                                        <Input
+                                            className={"mt-1 block w-full rounded-lg border-gray-300 h-[6rem]"}
+                                            value={data.body}
+                                            onChange={(e:any) => {setData('body',e.target.value)}}
+                                            placeholder={"What's on your mind?"}
+                                        />
+                                        <InputError message={errors.body} className={"mt-2"}/>
+                                    </div>
+                                    <div>
+                                        <PrimaryButton>
+                                            Add Comment
+                                        </PrimaryButton>
+                                    </div>
+
+                                </form>
+                            </div>
+
+                        }
                         <div className={"font-bold text-lg"}>
                             Comments
                         </div>
@@ -91,6 +104,14 @@ export default function Show({post, comments}:{post:any, comments:any}     ) {
                                         <span className={"font-semiboldtext-gray-800"}>By</span> <span className={"font-bold text-blue-950"}>{comment.user?.name}</span>
                                         <span className="ml-2">{formatDistance(comment?.created_at || new Date(), new Date())}</span> ago
                                     </div>
+                                    { page.props?.auth?.user?.id == comment.user.id &&
+                                        <div className={"mt-1"}>
+                                            <PrimaryButton onClick={()=> deleteComment(comment.id)}>
+                                                Delete
+                                            </PrimaryButton>
+                                        </div>
+
+                                    }
 
                                 </div>
                             </div>
