@@ -33,10 +33,10 @@ class CommentController extends Controller
         $validated = $request->validate([
             'body' => ['required','string','max:255'],
         ]);
-        $comment = Comment::make($validated);
-        $comment->user()->associate($request->user());
-        $comment->post()->associate($post);
-        $comment->save();
+        Comment::make($validated)
+            ->user()->associate($request->user())
+            ->post()->associate($post)
+            ->save();
         return redirect()->route('posts.show', $post);
     }
 
