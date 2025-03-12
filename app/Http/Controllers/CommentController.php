@@ -64,6 +64,12 @@ class CommentController extends Controller
     public function update(Request $request, Comment $comment)
     {
         //
+        $validated = $request->validate(['body'=>['required','string','max:255']]);
+
+        $comment->update($validated);
+
+        return redirect()->route('posts.show', $comment->post);
+
     }
 
     /**
