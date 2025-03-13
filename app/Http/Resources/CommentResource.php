@@ -23,6 +23,7 @@ class CommentResource extends JsonResource
             'created_at' => $this->created_at,
             'can' => [
                 'delete' =>  $request->user() ?  $request->user()->can('delete', $this->resource) : false,
+                'update' =>  $request->user() ?  $request->user()->can('update', $this->resource) : false,
             ]
         ];
     }

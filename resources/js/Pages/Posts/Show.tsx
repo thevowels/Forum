@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from 'react';
 import AppLayout from '@/Layouts/AppLayout';
 import { formatDistance } from "date-fns";
 import { Link, usePage } from '@inertiajs/react';
@@ -7,15 +7,15 @@ import Pagination from '@/Components/Pagination';
 import InputLabel from '@/Components/InputLabel';
 import { Input } from '@headlessui/react';
 import PrimaryButton from '@/Components/PrimaryButton';
+import SecondaryButton from '@/Components/SecondaryButton';
 import { useForm } from "@inertiajs/react";
 import InputError from '@/Components/InputError';
 import { route } from 'ziggy-js';
 import { router } from '@inertiajs/core';
+import { useComputed } from '@headlessui/react/dist/hooks/use-computed';
 
 export default function Show({post, comments}:{post:any, comments:any}     ) {
     const page = usePage();
-    console.log('page => ', page);
-    console.log('comments = > ', comments);
     const formattedDate = formatDistance(post?.created_at || new Date(), new Date());
     const {data, setData, post: realPost, put,  errors, processing, reset, recentlySuccessful } =
         useForm({
@@ -23,17 +23,36 @@ export default function Show({post, comments}:{post:any, comments:any}     ) {
         });
     const submit = (e:any) => {
         e.preventDefault();
-        realPost(route('posts.comments.store', post.id),{
-            preserveScroll: true,
-        });
-        reset()
+        if(commentIdBeingEdited.current)
+        {
+            put(route('comments.update', {comment: commentIdBeingEdited.current, page:comments?.meta?.current_page}),{
+                preserveScroll:true,
+                onSuccess: (response:any) => {
+                    commentIdBeingEdited.current=null;
+                }
+            })
+        }else{
+            realPost(route('posts.comments.store', post.id),{
+                preserveScroll: true,
+            });
+
+        }
+        reset();
 
     }
+
 
     const deleteComment = (id: string) => {
         router.delete(route('comments.destroy', { comment:id, page:comments?.meta?.current_page }), {
           preserveScroll: true,
         });
+    }
+
+    const commentIdBeingEdited: any = useRef(null);
+    const editComment = (id: string) => {
+        commentIdBeingEdited.current=id;
+        let commentBeingEdit = comments.data.find(comment => comment.id === id);
+        setData('body', commentBeingEdit.body);
     }
 
     // @ts-ignore
@@ -82,8 +101,19 @@ export default function Show({post, comments}:{post:any, comments:any}     ) {
                                     </div>
                                     <div>
                                         <PrimaryButton>
-                                            Add Comment
+                                            { commentIdBeingEdited.current == null ? 'Add Comment':'Update Comment' }
                                         </PrimaryButton>
+                                        {commentIdBeingEdited.current &&
+                                            <SecondaryButton onClick={(e)=> {
+                                                e.preventDefault();
+                                                commentIdBeingEdited.current=null;
+                                                reset();
+                                            }}>
+                                                Cancel
+                                            </SecondaryButton>
+
+                                        }
+
                                     </div>
 
                                 </form>
@@ -107,9 +137,12 @@ export default function Show({post, comments}:{post:any, comments:any}     ) {
                                         <span className="ml-2">{formatDistance(comment?.created_at || new Date(), new Date())}</span> ago
                                     </div>
                                     { comment.can?.delete &&
-                                        <div className={"mt-1"}>
+                                        <div className={"mt-1 text-right "}>
                                             <PrimaryButton onClick={()=> deleteComment(comment.id)}>
                                                 Delete
+                                            </PrimaryButton>
+                                            <PrimaryButton className={"ml-4 mr-2"} onClick={()=> editComment(comment.id)}>
+                                                Edit Comment
                                             </PrimaryButton>
                                         </div>
 
