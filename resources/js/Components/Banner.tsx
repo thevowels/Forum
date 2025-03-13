@@ -9,7 +9,7 @@ export default function Banner() {
   const message = props.jetstream.flash?.banner || '';
 
   return (
-    <div>
+    <div className={"sticky top-0"}>
       {show && message ? (
         <div
           className={classNames({
