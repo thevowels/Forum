@@ -4,19 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use App\Models\Post;
-use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
+    use AuthorizesRequests;
+
+
     /**
      * Display a listing of the resource.
      */
-    use AuthorizesRequests;
-    public function index()
-    {
-        //
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -42,21 +40,6 @@ class CommentController extends Controller
         return redirect()->route('posts.show', $post);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Comment $comment)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Comment $comment)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -65,10 +48,10 @@ class CommentController extends Controller
     {
         //
         $validated = $request->validate(['body'=>['required','string','max:255']]);
-
+        $this->authorize('update', $comment);
         $comment->update($validated);
 
-        return redirect()->route('posts.show', $comment->post);
+        return redirect()->route('posts.show', ['post' => $comment->post, 'page'=> $request->query('page')]);
 
     }
 
