@@ -8,14 +8,21 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
+
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
 class PostController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    use AuthorizesRequests;
+
+
     public function index()
     {
         //
+        $this->authorize('viewAny', Post::class);
         return Inertia('Posts/Index', [
             'posts'=> PostResource::collection(Post::with('user:id,name')->latest()->latest('id')->paginate()),
         ]);
@@ -27,6 +34,8 @@ class PostController extends Controller
     public function create()
     {
         //
+        $this->authorize('create', Post::class);
+        return Inertia('Posts/Create');
     }
 
     /**

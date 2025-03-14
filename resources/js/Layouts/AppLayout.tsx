@@ -41,10 +41,15 @@ export default function AppLayout({
       url: route('posts.index'),
       when: true,
       active: route().current('posts.index')
-    }
-
+    },
+      {
+      name: "Create a Post",
+          url: route('posts.create'),
+          when: page.props.permissions?.createPost,
+          active: route().current('posts.create'),
+      }
   ]
-  
+
   const [showingNavigationDropdown, setShowingNavigationDropdown] =
     useState(false);
 
@@ -90,7 +95,7 @@ export default function AppLayout({
                 {/* <!-- Navigation Links --> */}
                 <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                   {menu.map((item) => (
-                    item.when ? 
+                    item.when ?
                       <NavLink
                       key={item.name}
                       href={item.url}
@@ -99,13 +104,13 @@ export default function AppLayout({
                       {item.name}
                     </NavLink>
                     : null
-                    
+
                   ))}
                 </div>
               </div>
 
               <div className="hidden sm:flex sm:items-center sm:ml-6">
-                {!page.props.auth.user ? 
+                {!page.props.auth.user ?
               <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                   <NavLink
                     href={route('login')}
@@ -119,7 +124,7 @@ export default function AppLayout({
 
                 {/* <!-- Settings Dropdown --> */}
 
-                {page.props.auth.user ? 
+                {page.props.auth.user ?
                 <div className="ml-3 relative">
                   <Dropdown
                     align="right"
@@ -243,7 +248,7 @@ export default function AppLayout({
             </div>
 
             {/* <!-- Responsive Settings Options --> */}
-            {page.props.auth.user ? 
+            {page.props.auth.user ?
             <div className="pt-4 pb-1 border-t border-gray-200">
               <div className="flex items-center px-4">
                 {page.props.jetstream.managesProfilePhotos ? (

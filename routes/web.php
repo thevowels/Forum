@@ -31,7 +31,7 @@ Route::middleware([
     })->name('dashboard');
 
     Route::resource('posts.comments', CommentController::class)->shallow()->only(['store', 'update', 'destroy']);
-    Route::resource('posts', PostController::class)->shallow()->only(['store']);
+    Route::resource('posts', PostController::class)->shallow()->only(['store','create']);
 });
 
 Route::get('test',function(){
