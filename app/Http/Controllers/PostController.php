@@ -35,6 +35,16 @@ class PostController extends Controller
     public function store(Request $request)
     {
         //
+        $data = $request->validate([
+            'title' => ['required','string', 'min:5','max:120'],
+            'body' => ['required', 'string', 'min:10', 'max:1500'],
+        ]);
+        $post = Post::make($data);
+        $post->user()->associate($request->user())
+            ->save();
+
+        return redirect()->route('posts.show', $post );
+
     }
 
     /**
