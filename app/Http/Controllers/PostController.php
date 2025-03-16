@@ -24,7 +24,7 @@ class PostController extends Controller
         //
         $this->authorize('viewAny', Post::class);
         return Inertia('Posts/Index', [
-            'posts'=> PostResource::collection(Post::with('user:id,name')->latest()->latest('id')->paginate()),
+            'posts'=> PostResource::collection(Post::with(['user', 'topic'])->latest()->latest('id')->paginate()),
         ]);
     }
 

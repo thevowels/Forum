@@ -6,6 +6,7 @@ import InputLabel from '@/Components/InputLabel';
 import { Input, Textarea } from '@headlessui/react';
 import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
+import MarkdownEditor from '@/Components/MarkdownEditor';
 export default function Create(){
 
     const {data, setData, post, put,  errors, processing, reset, recentlySuccessful } =

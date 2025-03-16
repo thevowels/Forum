@@ -22,6 +22,11 @@ class Post extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function topic(): BelongsTo
+    {
+        return $this->belongsTo(Topic::class);
+    }
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
@@ -31,4 +36,10 @@ class Post extends Model
     {
         return Attribute::set(fn ($value) => Str::title($value));
     }
+
+    public function showRoute(array $parameters = [])
+    {
+        return route('posts.show', [$this, Str::slug($this->title), ...$parameters]);
+    }
+
 }
