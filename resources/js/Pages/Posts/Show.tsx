@@ -154,7 +154,7 @@ export default function Show({post, comments}:{post:any, comments:any}     ) {
                                         {comment.body}
                                     </div>
                                     <div>
-                                        <span className={"font-semiboldtext-gray-800"}>By</span> <span className={"font-bold text-blue-950"}>{comment.user?.name}</span>
+                                        <span className={"font-semiboldtext-gray-800"}>By</span> <span className={"font-bold text-blue-950"}>{comment.user?.name}</span> | <span className={"text-pink-500 "}>{comment.likes_count} Likes</span>
                                         <span className="ml-2">{formatDistance(comment?.created_at || new Date(), new Date())}</span> ago
                                     </div>
                                     { comment.can?.delete &&
