@@ -8,6 +8,7 @@ use App\Http\Resources\TopicResource;
 use App\Models\Post;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 use App\Models\Topic;
@@ -31,7 +32,7 @@ class PostController extends Controller
             ->paginate();
 
         $this->authorize('viewAny', Post::class);
-        return Inertia('Posts/Index', [
+        return Inertia::render('Posts/Index', [
             'posts'=> PostResource::collection($posts),
             'selectedTopic' => fn () => $topic ? TopicResource::make($topic) : null,
             'topics' => fn () =>  TopicResource::collection(Topic::all()),
@@ -45,7 +46,7 @@ class PostController extends Controller
     {
         //
         $this->authorize('create', Post::class);
-        return Inertia('Posts/Create',[
+        return Inertia::render('Posts/Create',[
             'topics' => fn () =>  TopicResource::collection(Topic::all()),
         ]);
     }
@@ -73,12 +74,18 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Post $post)
+    public function show(Post $post, Request $request)
     {
         //
+
+        if( !Str::contains($post->showRoute(), $request->path())){
+            return redirect($post->showRoute($request->query()), status: 301);
+        }
+        $post->load('user', 'topic');
+
         return Inertia::render('Posts/Show', [
             'post' => fn() => PostResource::make($post),
-            'comments' => fn() =>  CommentResource::collection($post->comments()->with('user')->orderByDesc('created_at')->paginate(3)),
+            'comments' => fn() =>  CommentResource::collection($post->comments()->with('user')->paginate(3)),
         ]);
     }
 

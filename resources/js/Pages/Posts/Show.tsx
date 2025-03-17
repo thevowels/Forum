@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import AppLayout from '@/Layouts/AppLayout';
 import { formatDistance } from "date-fns";
-import { Link, usePage } from '@inertiajs/react';
+import { Link, usePage , Head} from '@inertiajs/react';
 import {relativeDate} from '@/Utilities/date';
 import Pagination from '@/Components/Pagination';
 import InputLabel from '@/Components/InputLabel';
@@ -16,6 +16,7 @@ import { useComputed } from '@headlessui/react/dist/hooks/use-computed';
 import PageHeading from '@/Components/PageHeading';
 
 export default function Show({post, comments}:{post:any, comments:any}     ) {
+
     const page = usePage();
     const formattedDate = formatDistance(post?.created_at || new Date(), new Date());
     const {data, setData, post: realPost, put,  errors, processing, reset, recentlySuccessful } =
@@ -52,7 +53,7 @@ export default function Show({post, comments}:{post:any, comments:any}     ) {
     const commentIdBeingEdited: any = useRef(null);
     const editComment = (id: string) => {
         commentIdBeingEdited.current=id;
-        let commentBeingEdit = comments.data.find(comment => comment.id === id);
+        let commentBeingEdit = comments.data.find((comment : any)  => comment.id === id);
         setData('body', commentBeingEdit.body);
     }
 
@@ -62,27 +63,39 @@ export default function Show({post, comments}:{post:any, comments:any}     ) {
             title={post.title}
             renderHeader={() => (
                 <PageHeading>
-                    {post?.title}
-                </PageHeading>
+                    <div className="text-2xl font-semibold text-gray-700 leading-tight my-3">
+                        <div>
+                            <Link href={route('posts.index', {topic: post.topic?.slug})} className={"rounded-full py-0.5 px-2 border border-blue-300 text-blue-300 hover:bg-indigo-500 hover:text-white"}>
+                                {post.topic.name}
+                            </Link>
 
-            )}
-        >
-            <div>
-                <div className="max-w-2xl lg:max-w-7xl mx-auto">
-                    <div className="max-w-lg mx-auto bg-white my-4 p-8">
-                        <div className="text-2xl font-semibold text-gray-700 leading-tight my-3">
-                            {post?.title}
                         </div>
-                        <div className="text-gray-600 mb-2">
+                        <div className={"mt-2"}>
+                            {post?.title}
+
+                        </div>
+                        <div className="text-gray-600 mb-2 text-sm text-gray-500 font-light">
                             {formattedDate} Ago by
-                            <Link href={`/posts/${post?.user?.id}`}>
+                            <Link href={`/posts/${post?.user?.id}`} className={"ml-2"}>
                                 {post?.user.name}
                             </Link>
 
                         </div>
-                        <div className="text-gray-800 text-base whitespace-pre-wrap font-sans indent-8">
-                            {post?.body}
 
+                    </div>
+                </PageHeading>
+
+            )}
+        >
+
+            <Head>
+                <link rel={"canonical"} href={post.routes.show}/>
+            </Head>
+            <div>
+                <div className="max-w-2xl lg:max-w-7xl mx-auto">
+                    <div className="max-w-lg mx-auto bg-white my-4 p-8">
+                        <div className="text-gray-800 text-base whitespace-pre-wrap font-sans indent-8 text-wrap break-words">
+                            {post?.body}
                         </div>
                     </div>
 
