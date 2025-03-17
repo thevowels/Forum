@@ -43,7 +43,7 @@ export default function Index({post, posts, selectedTopic, topics}:{post:any, po
 
                 {posts &&
                   posts.data.map((post:any) => {
-                      const formattedDate = formatDistance(post?.created_at || new Date(), new Date());
+                      const formattedDate = formatDistance(post?.created_at || new Date(), new Date(), {addSuffix:true});
                       return(
                             <li key={post.id} className=' py-4 px-2 flex justify-between  items-baseline flex-col md:flex-row'>
                                 <Link href={post.routes.show} className={"group"} >
@@ -51,9 +51,7 @@ export default function Index({post, posts, selectedTopic, topics}:{post:any, po
                                         {post.title}
                                     </span>
                                     <div className="text-gray-600 mb-2 font-normal">
-                                        {formattedDate} Ago by
-                                            {post?.user.name}
-
+                                        {formattedDate} by {post?.user.name}
                                     </div>
 
                                 </Link>
