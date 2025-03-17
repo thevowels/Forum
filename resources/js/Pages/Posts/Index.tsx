@@ -7,9 +7,9 @@ import { Link } from '@inertiajs/react';
 import { formatDistance } from 'date-fns';
 import { route } from '../../../../vendor/tightenco/ziggy';
 import PageHeading from '@/Components/PageHeading';
+import clsx from 'clsx';
 
-
-export default function Index({post, posts, selectedTopic}:{post:any, posts:any,selectedTopic:any}
+export default function Index({post, posts, selectedTopic, topics}:{post:any, posts:any,selectedTopic:any, topics:any}
     ){
 
     const page = useTypedPage();
@@ -22,6 +22,16 @@ export default function Index({post, posts, selectedTopic}:{post:any, posts:any,
         renderHeader={() => (
             <PageHeading>
                 {selectedTopic ? selectedTopic.name : 'All Posts'}
+                <div className={"flex flex-wrap space-x-2 space-y-2 mt-4 pb-2 pt-1 text-nowrap  items-baseline"}>
+                    <Link id={"posts.index"} href={route('posts.index')} className={clsx("rounded-full py-0.5 px-2 border border-blue-300 text-blue-300 hover:bg-indigo-500 hover:text-white ml-2", !selectedTopic && "bg-indigo-500 !text-white" )} >
+                        All Posts
+                    </Link>
+                    {topics && topics.map((topic:any) => (
+                        <Link key={topic.id} href={route('posts.index', {topic: topic.slug})} className={clsx("rounded-full py-0.5 px-2 border border-blue-300 text-blue-300 hover:bg-indigo-500 hover:text-white", topic.slug === selectedTopic?.slug && "bg-indigo-500 !text-white")} >
+                            {topic.name}
+                        </Link>
+                    ))}
+                </div>
             </PageHeading>
         )}
 
