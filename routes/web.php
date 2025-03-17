@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Resources\CommentResource;
 use App\Http\Resources\PostResource;
@@ -33,6 +34,9 @@ Route::middleware([
     Route::resource('posts.comments', CommentController::class)->shallow()->only(['store', 'update', 'destroy']);
     Route::resource('posts', PostController::class)->shallow()->only(['store','create']);
 
+
+    Route::resource('likes', LikeController::class)->only(['store', 'destroy']);
+
 });
 
 Route::get('test',function(){
@@ -46,5 +50,4 @@ Route::get('test',function(){
 Route::get('posts/{topic?}' , [PostController::class, 'index'])->name('posts.index');
 
 Route::get('posts/{post}/{slug?}', [PostController::class, 'show'])->name('posts.show');
-
 
