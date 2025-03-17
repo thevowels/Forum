@@ -17,6 +17,7 @@ import PageHeading from '@/Components/PageHeading';
 
 export default function Show({post, comments}:{post:any, comments:any}     ) {
 
+    console.log(post);
     const page = usePage();
     const formattedDate = formatDistance(post?.created_at || new Date(), new Date());
     const {data, setData, post: realPost, put,  errors, processing, reset, recentlySuccessful } =
@@ -96,6 +97,11 @@ export default function Show({post, comments}:{post:any, comments:any}     ) {
                     <div className="max-w-lg mx-auto bg-white my-4 p-8">
                         <div className="text-gray-800 text-base whitespace-pre-wrap font-sans indent-8 text-wrap break-words">
                             {post?.body}
+                        </div>
+                        <div className="mt-4">
+                            <span className={"text-pink-500 font-bold"}>
+                                {post?.likes_count} Likes
+                            </span>
                         </div>
                     </div>
 

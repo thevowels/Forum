@@ -22,6 +22,7 @@ class PostResource extends JsonResource
             'topic' => TopicResource::make($this->topic),
             'title' => $this->title,
             'body' => $this->body,
+            'likes_count' => $this->likes_count,
             'updated_at'=> $this->updated_at,
             'created_at' => $this->created_at,
             'routes'=> [

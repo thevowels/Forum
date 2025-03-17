@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Str;
 
@@ -14,6 +15,8 @@ class Post extends Model
 {
     /** @use HasFactory<\Database\Factories\PostFactory> */
     use HasFactory;
+
+    protected $withCount = ['likes'];
     protected $fillable = [
         'title',
         'body',
@@ -45,4 +48,11 @@ class Post extends Model
         return route('posts.show', [$this, Str::slug($this->title), ...$parameters]);
     }
 
+    public function likes(): MorphMany
+    {
+        return $this->morphMany(Like::class, 'likeable');
+    }
+
+
 }
+
