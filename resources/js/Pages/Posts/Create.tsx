@@ -7,6 +7,7 @@ import { Input, Textarea } from '@headlessui/react';
 import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import MarkdownEditor from '@/Components/MarkdownEditor';
+import PageHeading from '@/Components/PageHeading';
 export default function Create(){
 
     const {data, setData, post, put,  errors, processing, reset, recentlySuccessful } =
@@ -24,9 +25,9 @@ export default function Create(){
     return(
         <AppLayout title={"Create a Post"}
                    renderHeader={() => (
-                       <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                            Create a new Post
-                       </h2>
+                       <PageHeading>
+                           Create Post
+                       </PageHeading>
                    )}
         >
             <div className="max-w-2xl mx-auto  my-4 p-8 text-sm bg-white rounded-xl">

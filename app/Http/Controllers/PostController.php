@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\CommentResource;
 use App\Http\Resources\PostResource;
+use App\Http\Resources\TopicResource;
 use App\Models\Post;
+
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+
+use App\Models\Topic;
 
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -19,12 +23,17 @@ class PostController extends Controller
     use AuthorizesRequests;
 
 
-    public function index()
+    public function index(Topic $topic=null)
     {
-        //
+        $posts = Post::with(['user','topic'])
+            ->when($topic, fn ( $query) => $query->whereBelongsTo($topic))
+            ->latest('id')
+            ->paginate();
+
         $this->authorize('viewAny', Post::class);
         return Inertia('Posts/Index', [
-            'posts'=> PostResource::collection(Post::with(['user', 'topic'])->latest()->latest('id')->paginate()),
+            'posts'=> PostResource::collection($posts),
+            'selectedTopic' => fn () => $topic ? TopicResource::make($topic) : null,
         ]);
     }
 

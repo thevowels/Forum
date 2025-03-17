@@ -13,6 +13,7 @@ import InputError from '@/Components/InputError';
 import { route } from 'ziggy-js';
 import { router } from '@inertiajs/core';
 import { useComputed } from '@headlessui/react/dist/hooks/use-computed';
+import PageHeading from '@/Components/PageHeading';
 
 export default function Show({post, comments}:{post:any, comments:any}     ) {
     const page = usePage();
@@ -60,9 +61,10 @@ export default function Show({post, comments}:{post:any, comments:any}     ) {
         <AppLayout
             title={post.title}
             renderHeader={() => (
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                <PageHeading>
                     {post?.title}
-                </h2>
+                </PageHeading>
+
             )}
         >
             <div>

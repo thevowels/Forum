@@ -9,14 +9,8 @@ const items = [
 ]
 
 interface Props {
-  meta: {
-      type: Object,
-      required: true
-  };
-  only: {
-      type: any,
-      default:  () => []
-  }
+  meta: any;
+  only: any;
   links: any;
 }
 

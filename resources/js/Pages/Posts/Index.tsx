@@ -6,9 +6,10 @@ import Pagination from '@/Components/Pagination';
 import { Link } from '@inertiajs/react';
 import { formatDistance } from 'date-fns';
 import { route } from '../../../../vendor/tightenco/ziggy';
+import PageHeading from '@/Components/PageHeading';
 
 
-export default function Index({posts,post}:{post:any, posts:any}
+export default function Index({post, posts, selectedTopic}:{post:any, posts:any,selectedTopic:any}
     ){
 
     const page = useTypedPage();
@@ -17,11 +18,11 @@ export default function Index({posts,post}:{post:any, posts:any}
     return(
         <AppLayout
 
-        title={'Profile'}
+        title={'Posts'}
         renderHeader={() => (
-          <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-            Profile
-          </h2>
+            <PageHeading>
+                {selectedTopic ? selectedTopic.name : 'All Posts'}
+            </PageHeading>
         )}
 
         >
@@ -46,7 +47,7 @@ export default function Index({posts,post}:{post:any, posts:any}
                                     </div>
 
                                 </Link>
-                                <Link href={"/"} className={"rounded-full py-0.5 px-2 border border-blue-300 text-blue-300 hover:bg-indigo-500"} >
+                                <Link href={route('posts.index', {topic: post.topic.slug})} className={"rounded-full py-0.5 px-2 border border-blue-300 text-blue-300 hover:bg-indigo-500"} >
                                     {post.topic.name}
                                 </Link>
 
@@ -56,7 +57,7 @@ export default function Index({posts,post}:{post:any, posts:any}
                 }
               </ul>
               </div>
-              <Pagination meta={posts.meta} links = {posts.links} only={['posts']}/>
+              <Pagination meta={posts.meta}  only={['posts']}  links={posts.links}/>
 
             </div>
         </AppLayout>

@@ -43,8 +43,7 @@ Route::get('test',function(){
     ];
 });
 
-Route::resource('posts', PostController::class)->only(['index', 'show']);
-
+Route::get('posts/{topic?}' , [PostController::class, 'index'])->name('posts.index');
 
 Route::get('posts/{post}/{slug?}', [PostController::class, 'show'])->name('posts.show');
 
