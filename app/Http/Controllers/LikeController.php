@@ -5,9 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Like;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
 
 class LikeController extends Controller
 {
+
+    use AuthorizesRequests;
+
     /**
      * Display a listing of the resource.
      */
@@ -30,6 +37,9 @@ class LikeController extends Controller
     public function store(Request $request, string $type, int $id)
     {
         $likeable = Relation::getMorphedModel($type)::findOrFail($id);
+
+//        Gate::authorize('create',[Like::class, $likeable]);
+        $this->authorize('create', [Like::class, $likeable]);
 
         $likeable->likes()->create([
             'user_id' => $request->user()->id,

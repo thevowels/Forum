@@ -24,8 +24,9 @@ it('allows liking a likeable', function (Model $likeable) {
     $user = User::factory()->create();
 
     actingAs($user)
+        ->fromRoute('dashboard')
         ->post(route('likes.store', [$likeable->getMorphClass(), $likeable->id]))
-        ->assertRedirect();
+        ->assertRedirect(route('dashboard'));
 
     $this->assertDatabaseHas(Like::class, [
         'user_id' => $user->id,
@@ -39,3 +40,13 @@ it('allows liking a likeable', function (Model $likeable) {
     fn() =>Post::factory()->create(),
     fn ()=> Comment::factory()->create(),
 ]);
+
+
+it('prevents liking something you already Liked', function () {
+    $like = Like::factory()->create();
+    $likeable = $like->likeable;
+
+    actingAs($like->user)
+        ->post(route('likes.store', [$likeable->getMorphClass(), $likeable->id]))
+        ->assertForbidden();
+});
