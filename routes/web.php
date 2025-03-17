@@ -35,7 +35,7 @@ Route::middleware([
     Route::resource('posts', PostController::class)->shallow()->only(['store','create']);
 
 
-    Route::resource('likes', LikeController::class)->only(['store', 'destroy']);
+    Route::post('/likes/{type?}/{id?}', [LikeController::class, 'store'])->name('likes.store');
 
 });
 
