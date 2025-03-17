@@ -50,3 +50,19 @@ it('prevents liking something you already Liked', function () {
         ->post(route('likes.store', [$likeable->getMorphClass(), $likeable->id]))
         ->assertForbidden();
 });
+
+it('only allows liking supported Models ', function () {
+    $user = User::factory()->create();
+
+    actingAs($user)
+        ->post(route('likes.store', [$user->getMorphClass(), $user->id]))
+        ->assertForbidden();
+
+});
+
+it('throws a 404 if type is not supported', function () {
+
+    actingAs(User::factory()->create())
+        ->post(route('likes.store', ['foo', 1]))
+        ->assertNotFound();
+});

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Post;
+use App\Models\User;
 use App\Policies\CommentPolicy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -35,6 +36,7 @@ class AppServiceProvider extends ServiceProvider
         Relation::enforceMorphMap([
             'post' => Post::class,
             'comment' => Comment::class,
+            'user' => User::class,
         ]);
         // Model::preventLazyLoading();
     }
