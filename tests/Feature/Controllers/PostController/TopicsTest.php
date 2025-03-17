@@ -8,6 +8,14 @@ use App\Models\Post;
 use App\Http\Resources\PostResource;
 use App\Http\Resources\TopicResource;
 
+beforeEach(function () {
+    $this->validData = fn() =>[
+        'title' => 'Hello World',
+        'topic_id' => Topic::factory()->create()->getKey(),
+        'body ' => "Loreum ipsum dolor sit amet oili ailder binop clorno bufflo dla",
+    ];
+});
+
 
 it('can filter  a topic ' , function () {
     $general = Topic::factory()->create();

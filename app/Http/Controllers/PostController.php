@@ -45,7 +45,9 @@ class PostController extends Controller
     {
         //
         $this->authorize('create', Post::class);
-        return Inertia('Posts/Create');
+        return Inertia('Posts/Create',[
+            'topics' => fn () =>  TopicResource::collection(Topic::all()),
+        ]);
     }
 
     /**
@@ -56,13 +58,15 @@ class PostController extends Controller
         //
         $data = $request->validate([
             'title' => ['required','string', 'min:5','max:120'],
-            'body' => ['required', 'string', 'min:10', 'max:1500'],
+            'topic_id' => ['required', 'exists:topics,id'],
+            'body' => ['required', 'string', 'min:100', 'max:1500'],
         ]);
-        $post = Post::make($data);
-        $post->user()->associate($request->user())
-            ->save();
+        $post = Post::create([
+            ...$data,
+            "user_id" => auth()->id(),
+        ]);
 
-        return redirect()->route('posts.show', $post );
+        return redirect($post->showRoute());
 
     }
 

@@ -21,7 +21,6 @@ class TopicFactory extends Factory
             'slug' => fake()->unique()->slug,
             'name' => fake()->name,
             'description' => fake()->sentence,
-
         ];
     }
 }

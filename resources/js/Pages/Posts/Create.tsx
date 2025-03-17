@@ -8,16 +8,18 @@ import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import MarkdownEditor from '@/Components/MarkdownEditor';
 import PageHeading from '@/Components/PageHeading';
-export default function Create(){
+export default function Create({topics}:{topics:any}){
 
     const {data, setData, post, put,  errors, processing, reset, recentlySuccessful } =
         useForm({
             body: '',
-            title: ''
+            title: '',
+            topic_id: topics[0]?.id
         });
 
     const submitPost = (e:any) => {
         e.preventDefault();
+
         post(route('posts.store'),{
             preserveScroll: true,
         })
@@ -44,6 +46,18 @@ export default function Create(){
                         />
                         <InputError message={errors.title} />
 
+                    </div>
+                    <div className={"mt-4"}>
+                        <InputLabel htmlFor="description"><span className={"text-lg"}>Topic</span></InputLabel>
+                        <select
+                            className={"mt-1 block w-full rounded-lg border-gray-300"}
+                            value={data.topic_id}
+                            onChange={(e:any) => setData('topic_id', e.target.value)}
+                        >
+                            {topics.map((topic:any) => (
+                                <option key={topic.id} value={topic.id}>{topic.name}</option>
+                            ))}
+                        </select>
                     </div>
 
                     <div className={"mt-4"}>

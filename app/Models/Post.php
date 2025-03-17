@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Routing\Route;
 use Illuminate\Support\Str;
 
 class Post extends Model
@@ -15,7 +16,9 @@ class Post extends Model
     use HasFactory;
     protected $fillable = [
         'title',
-        'body'
+        'body',
+        'user_id',
+        'topic_id',
     ];
 
     public function user(): BelongsTo
@@ -37,7 +40,7 @@ class Post extends Model
         return Attribute::set(fn ($value) => Str::title($value));
     }
 
-    public function showRoute(array $parameters = [])
+    public function showRoute(array $parameters = []): string
     {
         return route('posts.show', [$this, Str::slug($this->title), ...$parameters]);
     }
