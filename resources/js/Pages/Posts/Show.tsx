@@ -106,11 +106,11 @@ export default function Show({post, comments}:{post:any, comments:any}     ) {
                             {
                                 page.props.auth?.user &&
                                 (post.can?.like ?
-                                <Link href={route('likes.store', ['post', post.id])} method={"post"} as={"button"}>
+                                <Link preserveScroll href={route('likes.store', ['post', post.id])} method={"post"} as={"button"}>
                                     <HandThumbUpIcon height={24} color={"green"}/>
                                 </Link>
                                 :
-                                <Link href={route('likes.destroy', ['post', post.id])} method={"delete"} as={"button"}>
+                                <Link preserveScroll href={route('likes.destroy', ['post', post.id])} method={"delete"} as={"button"}>
                                     <HandThumbDownIcon height={24} color={"red"}/>
                                 </Link>
                                 )
@@ -174,6 +174,19 @@ export default function Show({post, comments}:{post:any, comments:any}     ) {
                                         <span className={"font-semiboldtext-gray-800"}>By</span> <span className={"font-bold text-blue-950"}>{comment.user?.name}</span> | <span className={"text-pink-500 "}>{comment.likes_count} Likes</span>
                                         <span className="ml-2">{formatDistance(comment?.created_at || new Date(), new Date())}</span> ago
                                     </div>
+                                    { page.props.auth?.user && (
+                                        comment.can?.like ?
+                                            <Link preserveScroll href={route('likes.store', ['comment', comment.id])} method={"post"} as={"button"}  >
+                                                <HandThumbUpIcon height={24} color={"green"} as={"button"} className={"inline"}/> Like Comment
+                                            </Link>
+                                            :
+                                            <Link preserveScroll href={route('likes.destroy', ['comment', comment.id])} method={"delete"} as={"button"}>
+                                                <HandThumbDownIcon height={24} color={"red"} as={"button"} className={"inline"}/> Unlike Comment
+                                            </Link>
+                                    )
+
+                                    }
+
                                     { comment.can?.delete &&
                                         <div className={"mt-1 text-right "}>
                                             <PrimaryButton onClick={()=> deleteComment(comment.id)}>
@@ -183,18 +196,6 @@ export default function Show({post, comments}:{post:any, comments:any}     ) {
                                                 Edit Comment
                                             </PrimaryButton>
                                         </div>
-
-                                    }
-                                    { page.props.auth?.user && (
-                                            comment.can?.like ?
-                                            <Link href={route('likes.store', ['post', post.id])} method={"post"} as={"button"} >
-                                                <HandThumbUpIcon height={24} color={"green"}/>
-                                            </Link>
-                                            :
-                                            <Link href={route('likes.destroy', ['post', post.id])} method={"delete"} as={"button"}>
-                                                <HandThumbDownIcon height={24} color={"red"}/>
-                                            </Link>
-                                    )
 
                                     }
 
