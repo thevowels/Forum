@@ -24,7 +24,7 @@ it('passes a post to the view' , function(){
     $post->load('user', 'topic');
 
     get($post->showRoute())
-        ->assertHasResource('post', PostResource::make($post));
+        ->assertHasResource('post', PostResource::make($post)->withLikePermission());
 });
 
 //it('passes comments to the view' , function(){
