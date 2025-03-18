@@ -25,7 +25,7 @@ it('redirect to the post show page', function () {
 
     actingAs($comment->user)
         ->delete(route('comments.destroy', $comment))
-        ->assertRedirect(route('posts.show', $comment->post));
+        ->assertRedirect($comment->post->showRoute());
 
 });
 

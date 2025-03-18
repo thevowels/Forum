@@ -27,7 +27,7 @@ it('redirects to post show page ', function (): void {
     $newBody = 'This is new comment';
     actingAs($comment->user)
         ->put(route('comments.update', $comment), ['body' => $newBody])
-        ->assertRedirect(route('posts.show', $comment->post));
+        ->assertRedirect($comment->post->showRoute());
 });
 
 it('redirects to post with correct comment pagination', function (): void {
@@ -35,7 +35,7 @@ it('redirects to post with correct comment pagination', function (): void {
     $newBody = 'This is new comment';
     actingAs($comment->user)
         ->put(route('comments.update', ['comment' => $comment, 'page'=>2]), ['body' => $newBody])
-        ->assertRedirect(route('posts.show', ['post' => $comment->post, 'page'=>2]));
+        ->assertRedirect($comment->post->showRoute() . http_build_query(['page' => 2]));
 
 });
 

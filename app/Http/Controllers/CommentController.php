@@ -51,7 +51,7 @@ class CommentController extends Controller
         $this->authorize('update', $comment);
         $comment->update($validated);
 
-        return redirect()->route('posts.show', ['post' => $comment->post, 'page'=> $request->query('page')])
+        return redirect($comment->post->showRoute() . http_build_query(['page' => $request->query('page')]))
             ->with(
                 'flash', [
                     'bannerStyle' => 'success',
@@ -71,7 +71,7 @@ class CommentController extends Controller
         $this->authorize('delete', $comment);
 
         $comment->delete();
-        return redirect()->route('posts.show', ['post'=> $comment->post_id,'slug' => 'adsf', 'page'=> $request->get('page') ])
+        return redirect($comment->post->showRoute() . http_build_query(['page' => $request->query('page')]))
             ->banner('comment Deleted!');
     }
 }

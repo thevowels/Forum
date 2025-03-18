@@ -34,7 +34,7 @@ it('redirct to post show page', function () {
     actingAs(User::factory()->create())->post(route('posts.comments.store', $post),[
         'body' => 'test comment' ,
     ])
-        ->assertRedirect(route('posts.show', $post));
+        ->assertRedirect($post->showRoute());
 
 });
 
