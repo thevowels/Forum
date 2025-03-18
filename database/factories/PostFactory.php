@@ -27,9 +27,7 @@ class PostFactory extends Factory
             'topic_id' => Topic::factory(),
             'title' => fake()->catchPhrase,
             'body' => Collection::times(4, fn() => fake()->realText(1000))->join(PHP_EOL.PHP_EOL),
-
-
-            //
+            'likes_count' => 0,
         ];
     }
 }

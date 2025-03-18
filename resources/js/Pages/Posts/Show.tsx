@@ -14,6 +14,7 @@ import { route } from 'ziggy-js';
 import { router } from '@inertiajs/core';
 import { useComputed } from '@headlessui/react/dist/hooks/use-computed';
 import PageHeading from '@/Components/PageHeading';
+import {HandThumbUpIcon, HandThumbDownIcon} from '@heroicons/react/24/solid';
 
 export default function Show({post, comments}:{post:any, comments:any}     ) {
 
@@ -35,7 +36,7 @@ export default function Show({post, comments}:{post:any, comments:any}     ) {
                 }
             })
         }else{
-            realPost(route('posts.comments.store', post.id),{
+            realPost(route('posts.comments.store', post),{
                 preserveScroll: true,
             });
 
@@ -98,11 +99,27 @@ export default function Show({post, comments}:{post:any, comments:any}     ) {
                         <div className="text-gray-800 text-base whitespace-pre-wrap font-sans indent-8 text-wrap break-words">
                             {post?.body}
                         </div>
-                        <div className="mt-4">
+                        <div className="mt-4 flex justify-between">
                             <span className={"text-pink-500 font-bold"}>
                                 {post?.likes_count} Likes
                             </span>
+                            {
+                                page.props.auth?.user &&
+                                (post.can?.like ?
+                                <Link href={route('likes.store', ['post', post.id])} method={"post"} as={"button"}>
+                                    <HandThumbUpIcon height={24} color={"green"}/>
+                                </Link>
+                                :
+                                <Link href={route('likes.destroy', ['post', post.id])} method={"delete"} as={"button"}>
+                                    <HandThumbDownIcon height={24} color={"red"}/>
+                                </Link>
+                                )
+
+                            }
+
+
                         </div>
+
                     </div>
 
                     <div className="max-w-2xl mx-auto  my-4 p-8 text-sm">
@@ -168,6 +185,19 @@ export default function Show({post, comments}:{post:any, comments:any}     ) {
                                         </div>
 
                                     }
+                                    { page.props.auth?.user && (
+                                            comment.can?.like ?
+                                            <Link href={route('likes.store', ['post', post.id])} method={"post"} as={"button"} >
+                                                <HandThumbUpIcon height={24} color={"green"}/>
+                                            </Link>
+                                            :
+                                            <Link href={route('likes.destroy', ['post', post.id])} method={"delete"} as={"button"}>
+                                                <HandThumbDownIcon height={24} color={"red"}/>
+                                            </Link>
+                                    )
+
+                                    }
+
 
                                 </div>
                             </div>

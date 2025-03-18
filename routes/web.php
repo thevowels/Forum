@@ -36,7 +36,7 @@ Route::middleware([
 
 
     Route::post('/likes/{type}/{id}', [LikeController::class, 'store'])->name('likes.store');
-//    Route::post('/likes/{type?}/{id?}', [LikeController::class, 'store'])->name('likes.store');
+    Route::delete('/likes/{type}/{id}', [LikeController::class, 'destroy'])->name('likes.destroy');
 
 });
 
@@ -50,5 +50,5 @@ Route::get('test',function(){
 
 Route::get('posts/{topic?}' , [PostController::class, 'index'])->name('posts.index');
 
-Route::get('posts/{post}/{slug?}', [PostController::class, 'show'])->name('posts.show');
+Route::get('posts/{post}/{slug}', [PostController::class, 'show'])->name('posts.show');
 

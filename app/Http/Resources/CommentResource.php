@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Like;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Number;
@@ -26,6 +27,7 @@ class CommentResource extends JsonResource
             'can' => [
                 'delete' =>  $request->user() ?  $request->user()->can('delete', $this->resource) : false,
                 'update' =>  $request->user() ?  $request->user()->can('update', $this->resource) : false,
+                'like' => $request->user() ?  $request->user()?->can('create', [Like::class, $this->resource]) : false,
             ]
         ];
     }

@@ -37,7 +37,7 @@ class CommentController extends Controller
             ->user()->associate($request->user())
             ->post()->associate($post)
             ->save();
-        return redirect()->route('posts.show', $post)->banner('Added a new comment');
+        return redirect($post->showRoute())->banner('Added a new comment');
     }
 
 
@@ -71,7 +71,7 @@ class CommentController extends Controller
         $this->authorize('delete', $comment);
 
         $comment->delete();
-        return redirect()->route('posts.show', ['post'=> $comment->post_id, 'page'=> $request->get('page') ])
+        return redirect()->route('posts.show', ['post'=> $comment->post_id,'slug' => 'adsf', 'page'=> $request->get('page') ])
             ->banner('comment Deleted!');
     }
 }
