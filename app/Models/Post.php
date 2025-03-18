@@ -11,10 +11,13 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Str;
 
+use Laravel\Scout\Searchable;
+
 class Post extends Model
 {
     /** @use HasFactory<\Database\Factories\PostFactory> */
     use HasFactory;
+    use Searchable;
 
     protected $fillable = [
         'title',
