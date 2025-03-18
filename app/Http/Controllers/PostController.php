@@ -25,22 +25,25 @@ class PostController extends Controller
     use AuthorizesRequests;
 
 
-    public function index(REquest $request, Topic $topic=null)
+    public function index(Request $request, Topic $topic=null)
     {
-        $posts = Post::with(['user','topic'])
+        if($request->query('query')){
+            $posts = Post::search($request->query('query'))
+                ->when($topic, fn (\Laravel\Scout\Builder $query) => $query->where('topic_id', $topic->id));
+
+        }else{
+                    $posts = Post::with(['user','topic'])
             ->when($topic, fn ( $query) => $query->whereBelongsTo($topic))
-            ->when(
-                $request->query('query'),
-                fn (Builder $query) => $query
-                            ->whereAny(['title', 'body'], 'ilike', '%' . $request->query('query') . '%')
-            )
-            ->latest('id')
-            ->paginate()
-            ->withQueryString();
+            ->latest('id');
+
+        }
+
+
+
 
         $this->authorize('viewAny', Post::class);
         return Inertia::render('Posts/Index', [
-            'posts'=> PostResource::collection($posts),
+            'posts'=> PostResource::collection($posts->paginate()->withQueryString()),
             'selectedTopic' => fn () => $topic ? TopicResource::make($topic) : null,
             'topics' => fn () =>  TopicResource::collection(Topic::all()),
             'query' => $request->query('query'),
