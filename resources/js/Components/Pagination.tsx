@@ -1,6 +1,8 @@
 import React from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
+
+
 
 const items = [
   { id: 1, title: 'Back End Developer', department: 'Engineering', type: 'Full-time', location: 'Remote' },
@@ -15,7 +17,8 @@ interface Props {
 }
 
 export default function Pagination({meta, links, only}:Props) {
-    console.log('pagination ' , meta);
+
+
   return (
     <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
       <div className="flex flex-1 justify-between sm:hidden">

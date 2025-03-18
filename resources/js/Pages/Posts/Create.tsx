@@ -8,7 +8,10 @@ import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import MarkdownEditor from '@/Components/MarkdownEditor';
 import PageHeading from '@/Components/PageHeading';
+
+
 export default function Create({topics}:{topics:any}){
+
 
     const {data, setData, post, put,  errors, processing, reset, recentlySuccessful } =
         useForm({

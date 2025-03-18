@@ -7,6 +7,7 @@ use App\Http\Resources\PostResource;
 use App\Http\Resources\TopicResource;
 use App\Models\Post;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
@@ -24,18 +25,25 @@ class PostController extends Controller
     use AuthorizesRequests;
 
 
-    public function index(Topic $topic=null)
+    public function index(REquest $request, Topic $topic=null)
     {
         $posts = Post::with(['user','topic'])
             ->when($topic, fn ( $query) => $query->whereBelongsTo($topic))
+            ->when(
+                $request->query('query'),
+                fn (Builder $query) => $query
+                            ->whereAny(['title', 'body'], 'ilike', '%' . $request->query('query') . '%')
+            )
             ->latest('id')
-            ->paginate();
+            ->paginate()
+            ->withQueryString();
 
         $this->authorize('viewAny', Post::class);
         return Inertia::render('Posts/Index', [
             'posts'=> PostResource::collection($posts),
             'selectedTopic' => fn () => $topic ? TopicResource::make($topic) : null,
             'topics' => fn () =>  TopicResource::collection(Topic::all()),
+            'query' => $request->query('query'),
         ]);
     }
 
