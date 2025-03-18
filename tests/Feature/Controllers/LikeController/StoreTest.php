@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 
 
 it('requires authentication ' ,function () {
-    post(route('likes.store'))
+    post(route('likes.store',['test',1]))
         ->assertRedirect(route('login'));
 });
 

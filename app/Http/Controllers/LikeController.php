@@ -43,7 +43,7 @@ class LikeController extends Controller
         if($modelName ===  null) {
             throw new ModelNotFoundException();
         }
-        
+
         $likeable = $modelName::findOrFail($id);
 
 //        Gate::authorize('create',[Like::class, $likeable]);
